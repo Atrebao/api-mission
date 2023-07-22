@@ -3,13 +3,19 @@ package com.app.mission.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,13 +25,15 @@ import lombok.Setter;
 public class Vol implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_vol;
 	
-	@ManyToOne
-	@JoinColumn(name="id_mission")
+	 @ManyToOne
+	 @OnDelete(action = OnDeleteAction.CASCADE)
+	@JoinColumn(name="idMission")
 	private Mission mission;
 	
+
 	private int hauteur_vol_retenue;
 	private String heure_decollage;
 	private String heure_atterissage;
@@ -34,9 +42,7 @@ public class Vol implements Serializable{
 	private String chevauchement;
 	private int vitesse;
 	private int inclinaison_camera;
-	private String plage_horaire_vol;
-	private int latitude;
-	private int longitude;
+
 	
 	public Vol() {
 		
@@ -45,8 +51,7 @@ public class Vol implements Serializable{
 	
 	
 	public Vol(Long id_vol, int hauteur_vol_retenue, String heure_decollage, String heure_atterissage,
-			int pourcentage_batteie, int gSD, String chevauchement, int vitesse, int inclinaison_camera,
-			String plage_horaire_vol, int latitude, int longitude) {
+			int pourcentage_batteie, int gSD, String chevauchement, int vitesse, int inclinaison_camera) {
 		super();
 		this.id_vol = id_vol;
 		this.hauteur_vol_retenue = hauteur_vol_retenue;
@@ -57,31 +62,30 @@ public class Vol implements Serializable{
 		this.chevauchement = chevauchement;
 		this.vitesse = vitesse;
 		this.inclinaison_camera = inclinaison_camera;
-		this.plage_horaire_vol = plage_horaire_vol;
-		this.latitude = latitude;
-		this.longitude = longitude;
+
 	}
 
 
 
-	public Vol(Long id_vol, Mission mission, int hauteur_vol_retenue, String heure_decoolage, String heure_atterissage,
-			int pourcentage_batteie, int gSD, String chevauchement, int vitesse, int inclinaison_camera,
-			String plage_horaire_vol, int latitude, int longitude) {
+
+	public Vol(Long id_vol, Mission mission, Drone drone, int hauteur_vol_retenue, String heure_decollage,
+			String heure_atterissage, int pourcentage_batteie, int gSD, String chevauchement, int vitesse,
+			int inclinaison_camera) {
 		super();
 		this.id_vol = id_vol;
 		this.mission = mission;
 		this.hauteur_vol_retenue = hauteur_vol_retenue;
-		this.heure_decollage = heure_decoolage;
+		this.heure_decollage = heure_decollage;
 		this.heure_atterissage = heure_atterissage;
 		this.pourcentage_batteie = pourcentage_batteie;
-		GSD = gSD;
+		this.GSD = gSD;
 		this.chevauchement = chevauchement;
 		this.vitesse = vitesse;
 		this.inclinaison_camera = inclinaison_camera;
-		this.plage_horaire_vol = plage_horaire_vol;
-		this.latitude = latitude;
-		this.longitude = longitude;
 	}
+
+
+
 	public Long getId_vol() {
 		return id_vol;
 	}
@@ -142,25 +146,22 @@ public class Vol implements Serializable{
 	public void setInclinaison_camera(int inclinaison_camera) {
 		this.inclinaison_camera = inclinaison_camera;
 	}
-	public String getPlage_horaire_vol() {
-		return plage_horaire_vol;
+
+
+
+
+	public String getHeure_decollage() {
+		return heure_decollage;
 	}
-	public void setPlage_horaire_vol(String plage_horaire_vol) {
-		this.plage_horaire_vol = plage_horaire_vol;
+
+
+
+	public void setHeure_decollage(String heure_decollage) {
+		this.heure_decollage = heure_decollage;
 	}
-	public int getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(int latitude) {
-		this.latitude = latitude;
-	}
-	public int getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(int longitude) {
-		this.longitude = longitude;
-	}
-	
+
+
+		
 	
 	
 	

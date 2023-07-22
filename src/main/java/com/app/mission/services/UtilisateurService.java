@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.mission.model.Utilisateur;
+import com.app.mission.model.User;
 import com.app.mission.repository.UtilisateurRepo;
 
 import lombok.Data;
@@ -20,15 +20,15 @@ public class UtilisateurService {
 		this.utilisateurRepo = utilisateurRepo;
 	}
 	
-	public Utilisateur addUtilisateur(Utilisateur utilisateur) {
+	public User addUtilisateur(User utilisateur) {
 		return utilisateurRepo.save(utilisateur);
 	}
 	
-	public Iterable<Utilisateur> getAllUtilisateur() {
+	public Iterable<User> getAllUtilisateur() {
 		return utilisateurRepo.findAll();
 	}
 	
-	public Optional<Utilisateur>  getUtilisateurById(final Long id) {
+	public Optional<User>  getUtilisateurById(final Long id) {
 		return utilisateurRepo.findById(id);
 	}
 	
@@ -36,7 +36,7 @@ public class UtilisateurService {
 		utilisateurRepo.deleteById(id);
 	}
 	
-	public Utilisateur updateUtilisateur(Utilisateur utilisateur) {
+	public User updateUtilisateur(User utilisateur) {
 		return	utilisateurRepo.save(utilisateur);
 	}
 }

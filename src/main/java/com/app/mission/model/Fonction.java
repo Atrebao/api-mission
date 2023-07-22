@@ -6,19 +6,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Fonction {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "fonction_generator")
 	private Long id_fonction;
 	
-	private String nom_fonction;
+	private String nom;
 	
-	@ManyToMany(mappedBy="fonctions")
-	private List<Personnel> personnels;
+
 
 	public Fonction() {
 		super();
@@ -28,14 +27,13 @@ public class Fonction {
 	public Fonction(Long id_fonction, String nom_fonction) {
 		super();
 		this.id_fonction = id_fonction;
-		this.nom_fonction = nom_fonction;
+		this.nom = nom_fonction;
 	}
 
 	public Fonction(Long id_fonction, String nom_fonction, List<Personnel> personnels) {
 		super();
 		this.id_fonction = id_fonction;
-		this.nom_fonction = nom_fonction;
-		this.personnels = personnels;
+		this.nom = nom_fonction;
 	}
 
 	public Long getId_fonction() {
@@ -47,20 +45,14 @@ public class Fonction {
 	}
 
 	public String getNom_fonction() {
-		return nom_fonction;
+		return nom;
 	}
 
 	public void setNom_fonction(String nom_fonction) {
-		this.nom_fonction = nom_fonction;
+		this.nom = nom_fonction;
 	}
 
-	public List<Personnel> getPersonnels() {
-		return personnels;
-	}
 
-	public void setPersonnels(List<Personnel> personnels) {
-		this.personnels = personnels;
-	}
 	
 	
 	

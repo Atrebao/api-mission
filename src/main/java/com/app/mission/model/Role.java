@@ -10,18 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "roles")
 public class Role implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_role;
 	
-	private String nom_role;
+	private ERole name;
 	
 	@ManyToMany(mappedBy ="roles")
-	private List<Utilisateur> utilisateurs;
+	private List<User> utilisateurs;
 	
 	@ManyToMany(mappedBy ="roles")
 	private List<Etape> etapes;
@@ -38,17 +40,17 @@ public class Role implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Role(Long id_role, String nom_role) {
+	public Role(Long id_role, ERole nom_role) {
 		super();
 		this.id_role = id_role;
-		this.nom_role = nom_role;
+		this.name = nom_role;
 	}
 
-	public Role(Long id_role, String nom_role, List<Utilisateur> utilisateurs, List<Etape> etapes,
+	public Role(Long id_role, ERole nom_role, List<User> utilisateurs, List<Etape> etapes,
 			List<Permission> permissions) {
 		super();
 		this.id_role = id_role;
-		this.nom_role = nom_role;
+		this.name = nom_role;
 		this.utilisateurs = utilisateurs;
 		this.etapes = etapes;
 		this.permissions = permissions;
@@ -62,19 +64,19 @@ public class Role implements Serializable{
 		this.id_role = id_role;
 	}
 
-	public String getNom_role() {
-		return nom_role;
+	public ERole getNom_role() {
+		return name;
 	}
 
-	public void setNom_role(String nom_role) {
-		this.nom_role = nom_role;
+	public void setNom_role(ERole nom_role) {
+		this.name = nom_role;
 	}
 
-	public List<Utilisateur> getUtilisateurs() {
+	public List<User> getUtilisateurs() {
 		return utilisateurs;
 	}
 
-	public void setUtilisateurs(List<Utilisateur> utilisateurs) {
+	public void setUtilisateurs(List<User> utilisateurs) {
 		this.utilisateurs = utilisateurs;
 	}
 

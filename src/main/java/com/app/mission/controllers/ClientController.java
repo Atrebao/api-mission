@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.mission.model.Client;
+import com.app.mission.repository.ClientRepo;
 import com.app.mission.services.ClientService;
 
 @RestController
@@ -22,6 +23,9 @@ import com.app.mission.services.ClientService;
 public class ClientController {
    @Autowired
    private ClientService clientService;
+   
+   @Autowired
+   private ClientRepo clientRepo;
    
    @PostMapping("/add")
    public ResponseEntity<Client> addClient(@RequestBody Client client) {
@@ -38,6 +42,7 @@ public class ClientController {
 			String nom = client.getNom_client();
 			if(nom != null) {
 				currentClient.setNom_client(nom);
+				currentClient.setEmail(client.getEmail());
 				
 			}
 			
@@ -61,7 +66,7 @@ public class ClientController {
 				currentClient.setNom_client(nom);
 				
 			}
-			currentClient.setMissions(client.getMissions());
+		
 			
 			currentClient.setContact_client(client.getContact_client());
 
@@ -77,7 +82,7 @@ public class ClientController {
 		return clientService.getClients();
 	}
 	
-	@GetMapping("/client/{id}")
+	@GetMapping("/{id}")
 	public Client getClientById(@PathVariable("id") final Long id) {
 		Optional<Client> client = clientService.getClient(id);
 		if(client.isPresent()) {
@@ -87,9 +92,24 @@ public class ClientController {
 		}
 	}
 	
-	@DeleteMapping("/client/{id}")
+	
+	@GetMapping("/contact/{contact}")
+	public Client getClientByContact(@PathVariable("contact") final String contact) {
+		Optional<Client> client = clientRepo.findClientByContact(contact);
+		if(client.isPresent()) {
+			return client.get();
+		} else {
+			return null;
+		}
+	}
+	
+	@DeleteMapping("/delete/{id}")
 	public void deleteClientById(@PathVariable("id") final Long id) {
-		clientService.deleteClient(id);
+		try {
+			clientService.deleteClient(id);
+		} catch (Exception e) {
+			System.out.println("Client " + id + " n'existe pas");
+		}
 	}
 
 }

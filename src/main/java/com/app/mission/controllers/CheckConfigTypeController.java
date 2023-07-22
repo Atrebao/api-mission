@@ -64,6 +64,10 @@ public class CheckConfigTypeController {
 		
 		@DeleteMapping("/delete/{id}")
 		public void deleteCheckConfigType(@PathVariable("id") final Long id) {
-			checkListConfigTypeService.deleteCheckListConfigById(id);
+			try {
+				checkListConfigTypeService.deleteCheckListConfigById(id);
+			} catch (Exception e) {
+				System.out.println("Ce element n'existe pas");
+			}
 		}
 }

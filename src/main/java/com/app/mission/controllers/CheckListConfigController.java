@@ -1,6 +1,9 @@
 package com.app.mission.controllers;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.mission.exception.RessourceNotFoundException;
 import com.app.mission.model.CheckListConfig;
+import com.app.mission.model.CheckListConfig;
+import com.app.mission.repository.CheckListConfigRepo;
+import com.app.mission.repository.MissionRepo;
 import com.app.mission.services.CheckListConfigService;
 
 @RestController
@@ -24,11 +31,39 @@ public class CheckListConfigController {
 	   @Autowired
 	   private CheckListConfigService checkListConfigService;
 	   
+	   @Autowired
+	   private CheckListConfigRepo checkListConfigRepo;
+	   
+	   @Autowired
+	   private MissionRepo missionRepo;
+	   
 	   @PostMapping("/add")
 	   public ResponseEntity<CheckListConfig> addCheckListConfig(@RequestBody CheckListConfig checkListConfig) {
 		   CheckListConfig newCheckListConfigType = checkListConfigService.addCheckListConfig(checkListConfig);
 	       return new ResponseEntity<>(newCheckListConfigType, HttpStatus.CREATED);
 	   }
+	   
+	   @PostMapping("/missions/{missionId}/checkListConfigs")
+	   public ResponseEntity<CheckListConfig> createCheckListConfig(@PathVariable(value = "missionId") Long missionId,
+	       @RequestBody CheckListConfig checkListConfigRequest) {
+	     CheckListConfig checkListConfig = missionRepo.findById(missionId).map(mission -> {
+	       checkListConfigRequest.setMission(mission);
+	       return checkListConfigRepo.save(checkListConfigRequest);
+	     }).orElseThrow(() -> new RessourceNotFoundException("Not found Mission with id = " + missionId));
+
+	     return new ResponseEntity<>(checkListConfig, HttpStatus.CREATED);
+	   }
+	   
+		@Transactional
+		  @DeleteMapping("/missions/{missionId}/checkListConfigs")
+		  public ResponseEntity<List<CheckListConfig>> deleteAllCheckListConfigsOfMission(@PathVariable(value = "missionId") Long missionId) {
+		    if (!missionRepo.existsById(missionId)) {
+		      throw new RessourceNotFoundException("Not found Mission with id = " + missionId);
+		    }
+
+		    checkListConfigRepo.deleteById(missionId);
+		    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		  }
 		
 		@PutMapping("/update/{id}")
 		public CheckListConfig updateCheckListConfigById(@PathVariable("id") final Long id, @RequestBody CheckListConfig checkListConfig) {

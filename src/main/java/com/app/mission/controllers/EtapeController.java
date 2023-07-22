@@ -1,6 +1,9 @@
 package com.app.mission.controllers;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.mission.exception.RessourceNotFoundException;
 import com.app.mission.model.Etape;
+import com.app.mission.model.Etape;
+import com.app.mission.repository.EtapeRepo;
+import com.app.mission.repository.WorkflowOperationRepo;
+import com.app.mission.repository.WorkflowRepo;
 import com.app.mission.services.EtapeService;
 
 @RestController
@@ -24,11 +32,42 @@ public class EtapeController {
 	   @Autowired
 	   private EtapeService etapeService;
 	   
+	   @Autowired
+	   private WorkflowOperationRepo workflowOperationRepo;
+	   
+	   @Autowired 
+	   private WorkflowRepo workflowRepo;
+	   
+	   @Autowired 
+	   private EtapeRepo etapeRepo;
+	   
 	   @PostMapping("/add")
 	   public ResponseEntity<Etape> addEtape(@RequestBody Etape etape) {
 	       Etape newEtape = etapeService.addEtape(etape);
 	       return new ResponseEntity<>(newEtape, HttpStatus.CREATED);
 	   }
+	   
+	   @PostMapping("/workflowOperations/{workflowOperationId}/etapes")
+	   public ResponseEntity<Etape> createEtape(@PathVariable(value = "workflowOperationId") Long workflowOperationId,
+	       @RequestBody Etape etapeRequest) {
+	     Etape etape = workflowOperationRepo.findById(workflowOperationId).map(workflowOperation -> {
+	       etapeRequest.setWorkflow_operation(workflowOperation);
+	       return etapeRepo.save(etapeRequest);
+	     }).orElseThrow(() -> new RessourceNotFoundException("Not found WorkflowOperation with id = " + workflowOperationId));
+
+	     return new ResponseEntity<>(etape, HttpStatus.CREATED);
+	   }
+	   
+		@Transactional
+		  @DeleteMapping("/workflowOperations/{workflowOperationId}/etapes")
+		  public ResponseEntity<List<Etape>> deleteAllEtapesOfMission(@PathVariable(value = "workflowOperationId") Long workflowOperationId) {
+		    if (!workflowOperationRepo.existsById(workflowOperationId)) {
+		      throw new RessourceNotFoundException("Not found Mission with id = " + workflowOperationId);
+		    }
+
+		    workflowOperationRepo.deleteById(workflowOperationId);
+		    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		  }
 		
 		@PutMapping("/update/{id}")
 		public Etape updateEtapeById(@PathVariable("id") final Long id, @RequestBody Etape etape) {

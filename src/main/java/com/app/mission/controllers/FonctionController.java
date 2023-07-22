@@ -2,6 +2,7 @@ package com.app.mission.controllers;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +20,8 @@ import com.app.mission.services.FonctionService;
 @RestController
 @RequestMapping("/api/fonction")
 public class FonctionController {
-	
+		
+		@Autowired
 	   private FonctionService fonctionService;
 	   
 	   @PostMapping("/add")
@@ -54,7 +56,6 @@ public class FonctionController {
 				
 				
 				currentFonction.setNom_fonction(fonction.getNom_fonction());
-				currentFonction.setPersonnels(fonction.getPersonnels());
 
 				fonctionService.addFonction(currentFonction);
 				
@@ -73,6 +74,16 @@ public class FonctionController {
 		@GetMapping("/fonction/{id}")
 		public Fonction getFonction(@PathVariable("id") final Long id) {
 			Optional<Fonction> fonction = fonctionService.getFonctionById(id);
+			if(fonction.isPresent()) {
+				return fonction.get();
+			} else {
+				return null;
+			}
+		}
+		
+		@GetMapping("/fonction/{name}")
+		public Fonction getFonctionByName(@PathVariable("name") final String name) {
+			Optional<Fonction> fonction = fonctionService.getFonctionByName(name);
 			if(fonction.isPresent()) {
 				return fonction.get();
 			} else {

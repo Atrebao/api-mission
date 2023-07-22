@@ -3,11 +3,17 @@ package com.app.mission.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class CheckListConfig implements Serializable{
@@ -18,17 +24,26 @@ public class CheckListConfig implements Serializable{
 	
 	private String libelle;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_mission")
+	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	  @JoinColumn(name = "idMission", nullable = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  @JsonIgnore
 	private Mission mission;
 	
 	
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idGpConfig")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private GpConfigCheck gpConfigCheck;
 	
-	@ManyToOne
+	
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "id_ckeckConfigType")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private CheckConfigType ckeckConfigType;
 
 	public CheckListConfig() {

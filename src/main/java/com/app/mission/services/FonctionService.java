@@ -32,6 +32,10 @@ public class FonctionService {
 		return fonctionRepo.findById(id);
 	}
 	
+	public Optional<Fonction> getFonctionByName(String name) {
+		return fonctionRepo.findByNom(name);
+	}
+	
 	public void deleteFonctionById(final Long id) {
 		fonctionRepo.deleteById(id);
 	}

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.mission.model.Materiel;
-import com.app.mission.model.Materiel;
 import com.app.mission.repository.MaterielRepo;
 
 import lombok.Data;
@@ -20,8 +19,6 @@ public class MaterielService {
 	public MaterielService(MaterielRepo materielRepo) {
 		this.materielRepo = materielRepo;
 	}
-	
-	
 	
 	public Materiel addMateriel(Materiel materiel) {
 		return materielRepo.save(materiel);
@@ -39,7 +36,7 @@ public class MaterielService {
 		materielRepo.deleteById(id);
 	}
 	
-	public Materiel updateMateriel(final Materiel materiel) {
-		return materielRepo.save(materiel);
+	public Materiel updateMateriel(Materiel materiel) {
+		return	materielRepo.save(materiel);
 	}
 }

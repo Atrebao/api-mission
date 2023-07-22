@@ -1,6 +1,9 @@
 package com.app.mission.controllers;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +17,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.mission.exception.RessourceNotFoundException;
 import com.app.mission.model.Commune;
+import com.app.mission.repository.CommuneRepo;
+import com.app.mission.repository.VilleRepo;
 import com.app.mission.services.CommuneService;
 
 @RestController
 @RequestMapping("/api/commune")
 public class CommuneController {
+	
+		@Autowired
+		private VilleRepo villeRepo;
+		
+		@Autowired
+		private CommuneRepo communeRepo;
 	
 	
 	   @Autowired
@@ -30,6 +42,28 @@ public class CommuneController {
 		   Commune newCommuneType = communeService.addCommune(commune);
 	       return new ResponseEntity<>(newCommuneType, HttpStatus.CREATED);
 	   }
+	   
+	   @PostMapping("/villes/{villeId}/communes")
+	   public ResponseEntity<Commune> createCommune(@PathVariable(value = "villeId") Long villeId,
+	       @RequestBody Commune communeRequest) {
+	     Commune commune = villeRepo.findById(villeId).map(ville -> {
+	       communeRequest.setVille(ville);
+	       return communeRepo.save(communeRequest);
+	     }).orElseThrow(() -> new RessourceNotFoundException("Not found Ville with id = " + villeId));
+
+	     return new ResponseEntity<>(commune, HttpStatus.CREATED);
+	   }
+	   
+		@Transactional
+		  @DeleteMapping("/villes/{villeId}/communes")
+		  public ResponseEntity<List<Commune>> deleteAllCommunesOfMission(@PathVariable(value = "villeId") Long villeId) {
+		    if (!villeRepo.existsById(villeId)) {
+		      throw new RessourceNotFoundException("Not found Mission with id = " + villeId);
+		    }
+
+		    villeRepo.deleteById(villeId);
+		    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		  }
 		
 		@PutMapping("/update/{id}")
 		public Commune updateCommuneById(@PathVariable("id") final Long id, @RequestBody Commune commune) {

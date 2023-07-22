@@ -3,33 +3,50 @@ package com.app.mission.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
-public class Obstacles implements Serializable{
+public class Obstacle implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "obstacle_generator")
 	private Long id_obst;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_mission")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "idMission")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private Mission mission;
 	
 	private String nom_obst;
 	private String type_obst;
 	private String haute_obst;
-	private String meprise_obst;
+	private String emprise_obst;
 	
-	public Obstacles() {
+	public Obstacle() {
 		
 	}
 	
-	public Obstacles(Long id_obst, Mission mission, String nom_obst, String type_obst, String haute_obst,
+	public Obstacle(Long id_obst, Mission mission, String nom_obst, String type_obst, String haute_obst,
 			String meprise_obst) {
 		super();
 		this.id_obst = id_obst;
@@ -37,7 +54,7 @@ public class Obstacles implements Serializable{
 		this.nom_obst = nom_obst;
 		this.type_obst = type_obst;
 		this.haute_obst = haute_obst;
-		this.meprise_obst = meprise_obst;
+		this.emprise_obst = meprise_obst;
 	}
 	public Long getId_obst() {
 		return id_obst;
@@ -70,10 +87,10 @@ public class Obstacles implements Serializable{
 		this.haute_obst = haute_obst;
 	}
 	public String getMeprise_obst() {
-		return meprise_obst;
+		return emprise_obst;
 	}
 	public void setMeprise_obst(String meprise_obst) {
-		this.meprise_obst = meprise_obst;
+		this.emprise_obst = meprise_obst;
 	}
 	
 	

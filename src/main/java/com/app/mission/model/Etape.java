@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,11 +13,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Etape implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "etape_generator")
 	private Long id_etape;
 	
 	private String libelle_etape;
@@ -27,11 +33,15 @@ public class Etape implements Serializable{
 	
 	private Boolean isActive;
 	
-	@ManyToOne
+	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  @JsonIgnore
 	@JoinColumn(name="id_workflow")
 	private Workflow workflow;
 	
-	@ManyToOne
+	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  @JsonIgnore
 	@JoinColumn(name="id_wkfOp")
 	private WorkflowOperation workflow_operation;
 	

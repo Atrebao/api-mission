@@ -86,14 +86,14 @@ public class WorkflowOperation implements Serializable{
 	    
 	    
 	    @OneToOne
-	    @JoinColumn(name = "id_mission")
+	    @JoinColumn(name = "idMission")
 	    private Mission mission;
 	    
 	    @OneToMany(mappedBy ="id_pieceJointe")
 	    private List<PieceJointe> pieceJointes;
 	    
 	    @OneToMany(mappedBy ="id_utilisateur")
-	    private List<Utilisateur> utilisateurs;
+	    private List<User> utilisateurs;
 
 		public WorkflowOperation() {
 			super();
@@ -116,7 +116,7 @@ public class WorkflowOperation implements Serializable{
 
 		public WorkflowOperation(Long id_wkfOp, Date date_creation, Date date_miseAjour, Long id_wkfOpParent,
 				Long id_userInsert, Long id_userUpdate, Boolean isActive, JsonNode jsonData, String dataJson,
-				Etape etape, Mission mission, List<PieceJointe> pieceJointes, List<Utilisateur> utilisateurs) {
+				Etape etape, Mission mission, List<PieceJointe> pieceJointes, List<User> utilisateurs) {
 			super();
 			this.id_wkfOp = id_wkfOp;
 			this.date_creation = date_creation;
@@ -221,11 +221,11 @@ public class WorkflowOperation implements Serializable{
 			this.pieceJointes = pieceJointes;
 		}
 
-		public List<Utilisateur> getUtilisateurs() {
+		public List<User> getUtilisateurs() {
 			return utilisateurs;
 		}
 
-		public void setUtilisateurs(List<Utilisateur> utilisateurs) {
+		public void setUtilisateurs(List<User> utilisateurs) {
 			this.utilisateurs = utilisateurs;
 		}
 	

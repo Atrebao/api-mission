@@ -16,23 +16,23 @@ public class VolService {
 	@Autowired
 	private VolRepo volRepo;
 	
-	public Optional<Vol> getPersonnel(final Long id) {
+	public Optional<Vol> getVol(final Long id) {
 		return volRepo.findById(id);
 	}
 	
-	public Iterable<Vol> getPersonnels(){
+	public Iterable<Vol> getVols(){
 		return volRepo.findAll();
 	}
 	
-	public void deletePersoneel(final Long id) {
+	public void deleteVol(final Long id) {
 		volRepo.deleteById(id);
 	}
 	
-	public Vol addPersonnel(Vol vol) {
+	public Vol addVol(Vol vol) {
 		return volRepo.save(vol);
 	}
 	
-	public Vol updtaPersonnel(Vol vol) {
+	public Vol updtaVol(Vol vol) {
 		return volRepo.save(vol);
 	}
 }

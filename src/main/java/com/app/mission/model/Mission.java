@@ -2,48 +2,82 @@ package com.app.mission.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Mission implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_mission;
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "mission_generator")
+	private Long idMission;
 	
 	
-	@ManyToOne
-	@JoinColumn(name="id_client")
-	private Client client;
+	  @ManyToOne
+	  @JoinColumn(name = "id_client", nullable = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  @JsonIgnore
+	  private Client client;
 	
 	
-	@ManyToMany(mappedBy="missions")
-	private List<Personnel> pernonnel;
+	  /*	@ManyToMany(fetch = FetchType.LAZY,
+		      cascade = {
+		              CascadeType.PERSIST,
+		              CascadeType.MERGE
+		          },
+		          mappedBy = "missions")
+	  @JsonIgnore
+	  	private Set<Personnel> personnels = new HashSet<>();
+	   * 
+	   * */
 	
 
 	@OneToMany(mappedBy ="id_vol")
+	@JsonIgnore
 	private List<Vol> vols;
 	
-	@OneToMany(mappedBy="id_obst")
-	private List<Obstacles> obstacles;
+	/*
+	 * 
+	 * 	@OneToMany(targetEntity = Obstacle.class, cascade = CascadeType.ALL)
+	@JoinColumn(name="id_obst", referencedColumnName = "idMission")
+	private List<Obstacle> obstacles;
+	 * */
+
 	
 	@OneToMany(mappedBy="id_mat")
+	@JsonIgnore
 	private List<Materiel> materiels;
 	
 
 	
 	@ManyToOne
 	@JoinColumn(name="id_ville")
+	@JsonIgnore
 	private Ville ville;
 	
 	
@@ -51,14 +85,25 @@ public class Mission implements Serializable{
 	private List<CheckListConfig> checkListConfigs;
 	
 	@OneToMany(mappedBy="id_pieceJointe")
+	@JsonIgnore
 	private List<PieceJointe> pieceJointes;
 	
-	
+
 	@OneToOne
 	@JoinColumn(name="id_wkfOp")
+	@JsonIgnore
 	private WorkflowOperation workflowOperation;
 	
+	@OneToMany(targetEntity = Personnel.class , cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_personnel")
+	@JsonIgnore
+	private Set<Personnel> personnels = new HashSet<>();
 	
+	
+
+
+
+
 	/*
 	 * @OneToMany(mappedBy="id_personnel")
 	private List<Personnel> personel;
@@ -81,33 +126,135 @@ public class Mission implements Serializable{
 	private String plage_horaire_mission_debut;
 	private String plage_horaire_mission_fin;
 	private Date date_estime_mission;
-	private Date date_heure_effective_mission;
+	private Date date_heure_mission;
+	private String date_heure_arrive;
+	private int latitude;
+	private int longitude;
+	private String condition_vent_critque_mission;
+	private String autorite_informe;
 	
 	
-	public Mission() {
+	
+	public int getLatitude() {
+		return latitude;
 	}
 
 
-	public Mission(Long id_mission, Client client, List<Personnel> pernonnel, List<Vol> vols, List<Obstacles> obstacles,
-			List<Materiel> materiels, Ville ville, List<CheckListConfig> checkListConfigs,
-			List<PieceJointe> pieceJointes, WorkflowOperation workflowOperation, String nom_mission,
-			String type_mission, String description_mission, String code_mission, String classe_espace_aerien,
-			String statut_zone_mission, String scenario_mission, String condition_vent,
+
+
+
+	public void setLatitude(int latitude) {
+		this.latitude = latitude;
+	}
+
+
+
+
+
+	public String getCondition_vent_critque_mission() {
+		return condition_vent_critque_mission;
+	}
+
+
+
+
+
+	public void setCondition_vent_critque_mission(String condition_vent_critque_mission) {
+		this.condition_vent_critque_mission = condition_vent_critque_mission;
+	}
+
+
+
+
+
+	public int getLongitude() {
+		return longitude;
+	}
+
+
+
+
+
+	public void setLongitude(int longitude) {
+		this.longitude = longitude;
+	}
+
+
+
+
+
+	public Mission() {}
+
+	
+
+
+	
+
+
+	public Mission(Long idMission, String nom_mission, String type_mission, String description_mission,
+			String code_mission, String classe_espace_aerien, String statut_zone_mission, String scenario_mission,
 			String condition_humidite, String condition_visibilite, String surface_atterissage,
 			String surface_decollage, String balisage, String evenements, String difficultes,
 			String plage_horaire_mission_debut, String plage_horaire_mission_fin, Date date_estime_mission,
-			 Date date_heure_effective_mission) {
+			Date date_heure_effective_mission, String date_heure_arrive, int latitude, int longitude,
+			String condition_vent_critque_mission, String autorite_informe) {
 		super();
-		this.id_mission = id_mission;
+		this.idMission = idMission;
+		this.nom_mission = nom_mission;
+		this.type_mission = type_mission;
+		this.description_mission = description_mission;
+		this.code_mission = code_mission;
+		this.classe_espace_aerien = classe_espace_aerien;
+		this.statut_zone_mission = statut_zone_mission;
+		this.scenario_mission = scenario_mission;
+		this.condition_humidite = condition_humidite;
+		this.condition_visibilite = condition_visibilite;
+		this.surface_atterissage = surface_atterissage;
+		this.surface_decollage = surface_decollage;
+		this.balisage = balisage;
+		this.evenements = evenements;
+		this.difficultes = difficultes;
+		this.plage_horaire_mission_debut = plage_horaire_mission_debut;
+		this.plage_horaire_mission_fin = plage_horaire_mission_fin;
+		this.date_estime_mission = date_estime_mission;
+		this.date_heure_mission = date_heure_effective_mission;
+		this.date_heure_arrive = date_heure_arrive;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.condition_vent_critque_mission = condition_vent_critque_mission;
+		this.autorite_informe = autorite_informe;
+	}
+
+
+
+	public void addPersonnel(Personnel personnel) {
+	    this.personnels.add(personnel);
+	}
+
+
+
+
+
+
+	public Mission(Long idMission, Client client, List<Vol> vols, List<Materiel> materiels, Ville ville,
+			List<CheckListConfig> checkListConfigs, List<PieceJointe> pieceJointes, WorkflowOperation workflowOperation,
+			Set<Personnel> personnels, String nom_mission, String type_mission, String description_mission,
+			String code_mission, String classe_espace_aerien, String statut_zone_mission, String scenario_mission,
+			String condition_humidite, String condition_visibilite, String surface_atterissage,
+			String surface_decollage, String balisage, String evenements, String difficultes,
+			String plage_horaire_mission_debut, String plage_horaire_mission_fin, Date date_estime_mission,
+			Date date_heure_effective_mission, String date_heure_arrive, int latitude, int longitude,
+			String condition_vent_critque_mission, String autorite_informe) {
+		super();
+		this.idMission = idMission;
 		this.client = client;
-		this.pernonnel = pernonnel;
 		this.vols = vols;
-		this.obstacles = obstacles;
 		this.materiels = materiels;
 		this.ville = ville;
 		this.checkListConfigs = checkListConfigs;
 		this.pieceJointes = pieceJointes;
 		this.workflowOperation = workflowOperation;
+		this.personnels = personnels;
 		this.nom_mission = nom_mission;
 		this.type_mission = type_mission;
 		this.description_mission = description_mission;
@@ -125,45 +272,41 @@ public class Mission implements Serializable{
 		this.plage_horaire_mission_debut = plage_horaire_mission_debut;
 		this.plage_horaire_mission_fin = plage_horaire_mission_fin;
 		this.date_estime_mission = date_estime_mission;
-		this.date_heure_effective_mission = date_heure_effective_mission;
+		this.date_heure_mission = date_heure_effective_mission;
+		this.date_heure_arrive = date_heure_arrive;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.condition_vent_critque_mission = condition_vent_critque_mission;
+		this.autorite_informe = autorite_informe;
 	}
 
 
-	public Mission(Long id_mission, String nom_mission, String type_mission, String description_mission,
-			String code_mission, String classe_espace_aerien, String statut_zone_mission, String scenario_mission, String condition_humidite,
-			String condition_visibilite, String surface_atterissage, String surface_decollage, String balisage,
-			String evenements, String difficultes, String plage_horaire_mission_debut, String plage_horaire_mission_fin,
-			Date date_estime_mission, String difficutes, Date date_heure_effective_mission) {
-		super();
-		this.id_mission = id_mission;
-		this.nom_mission = nom_mission;
-		this.type_mission = type_mission;
-		this.description_mission = description_mission;
-		this.code_mission = code_mission;
-		this.classe_espace_aerien = classe_espace_aerien;
-		this.statut_zone_mission = statut_zone_mission;
-		this.scenario_mission = scenario_mission;
-		this.condition_humidite = condition_humidite;
-		this.condition_visibilite = condition_visibilite;
-		this.surface_atterissage = surface_atterissage;
-		this.surface_decollage = surface_decollage;
-		this.balisage = balisage;
-		this.evenements = evenements;
-		this.difficultes = difficultes;
-		this.plage_horaire_mission_debut = plage_horaire_mission_debut;
-		this.plage_horaire_mission_fin = plage_horaire_mission_fin;
-		this.date_estime_mission = date_estime_mission;
-		this.date_heure_effective_mission = date_heure_effective_mission;
+
+
+
+	public Set<Personnel> getPersonnels() {
+		return personnels;
 	}
+
+
+
+
+
+	public void setPersonnels(Set<Personnel> personnels) {
+		this.personnels = personnels;
+	}
+
+
+
 
 
 	public Long getId_mission() {
-		return id_mission;
+		return idMission;
 	}
 
 
-	public void setId_mission(Long id_mission) {
-		this.id_mission = id_mission;
+	public void setId_mission(Long idMission) {
+		this.idMission = idMission;
 	}
 
 
@@ -177,14 +320,7 @@ public class Mission implements Serializable{
 	}
 
 
-	public List<Personnel> getPernonnel() {
-		return pernonnel;
-	}
 
-
-	public void setPernonnel(List<Personnel> pernonnel) {
-		this.pernonnel = pernonnel;
-	}
 
 
 	public List<Vol> getVols() {
@@ -197,14 +333,7 @@ public class Mission implements Serializable{
 	}
 
 
-	public List<Obstacles> getObstacles() {
-		return obstacles;
-	}
 
-
-	public void setObstacles(List<Obstacles> obstacles) {
-		this.obstacles = obstacles;
-	}
 
 
 	public List<Materiel> getMateriels() {
@@ -436,13 +565,57 @@ public class Mission implements Serializable{
 
 
 	public Date getDate_heure_effective_mission() {
-		return date_heure_effective_mission;
+		return date_heure_mission;
 	}
 
 
 	public void setDate_heure_effective_mission(Date date_heure_effective_mission) {
-		this.date_heure_effective_mission = date_heure_effective_mission;
+		this.date_heure_mission = date_heure_effective_mission;
 	}
+
+
+	public String getDate_heure_arrive() {
+		return date_heure_arrive;
+	}
+
+
+	public void setDate_heure_arrive(String date_heure_arrive) {
+		this.date_heure_arrive = date_heure_arrive;
+	}
+
+
+
+
+
+	public Long getIdMission() {
+		return idMission;
+	}
+
+
+
+
+
+	public void setIdMission(Long idMission) {
+		this.idMission = idMission;
+	}
+
+
+
+
+
+	public String getAutorite_informe() {
+		return autorite_informe;
+	}
+
+
+
+
+
+	public void setAutorite_informe(String autorite_informe) {
+		this.autorite_informe = autorite_informe;
+	}
+	
+	
 	
 	
 	

@@ -14,19 +14,17 @@ public class CheckConfigType implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id_ckeckConfigType;
+	private Long id;
 	
 	private String  nom_ckeckConfigType;
 	
-	@OneToMany(mappedBy ="id_ckeckListConfig")
-	private List<CheckListConfig> checkListConfigs;
-	
-	
+
+		
 	
 
-	public CheckConfigType(Long id_ckeckConfigType, String nom_ckeckConfigType) {
+	public CheckConfigType(Long id, String nom_ckeckConfigType) {
 		super();
-		this.id_ckeckConfigType = id_ckeckConfigType;
+		this.id = id;
 		this.nom_ckeckConfigType = nom_ckeckConfigType;
 	}
 
@@ -34,23 +32,22 @@ public class CheckConfigType implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+		
 
-	public CheckConfigType(Long id_ckeckConfigType, String nom_ckeckConfigType,
-			List<CheckListConfig> checkListConfigs) {
+	public CheckConfigType(Long id, String nom_ckeckConfigType,
+		List<CheckListConfig> checkListConfigs) {
 		super();
-		this.id_ckeckConfigType = id_ckeckConfigType;
+		this.id = id;
 		this.nom_ckeckConfigType = nom_ckeckConfigType;
-		this.checkListConfigs = checkListConfigs;
+
 	}
 
 	public Long getId_ckeckConfigType() {
-		return id_ckeckConfigType;
+		return id;
 	}
 
-	public void setId_ckeckConfigType(Long id_ckeckConfigType) {
-		this.id_ckeckConfigType = id_ckeckConfigType;
+	public void setId_ckeckConfigType(Long id) {
+		this.id = id;
 	}
 
 	public String getNom_ckeckConfigType() {
@@ -61,13 +58,6 @@ public class CheckConfigType implements Serializable{
 		this.nom_ckeckConfigType = nom_ckeckConfigType;
 	}
 
-	public List<CheckListConfig> getCheckListConfigs() {
-		return checkListConfigs;
-	}
 
-	public void setCheckListConfigs(List<CheckListConfig> checkListConfigs) {
-		this.checkListConfigs = checkListConfigs;
-	}
-	
 	
 }

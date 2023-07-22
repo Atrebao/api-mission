@@ -1,10 +1,10 @@
 package com.app.mission.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,16 +14,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Materiel implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)//Cette strategie est utlisé pour les les classes parent
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "materiel_generator")//Cette strategie est utlisé pour les les classes parent
 	private Long id_mat;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_mission")
+	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  @JsonIgnore
+	@JoinColumn(name = "idMission")
 	private Mission mission;
 	
 	@OneToMany(mappedBy = "id_equip")
@@ -32,7 +39,7 @@ public class Materiel implements Serializable{
 	private String designation_mat;
 	private String date_heure_sortie;
 	private String  date_heure_retour;
-	private int quatite;
+	private int quantite;
 	private String etat_marche_mat;
 	
 
@@ -51,7 +58,7 @@ public class Materiel implements Serializable{
 		this.designation_mat = designation_mat;
 		this.date_heure_sortie = date_heure_sortie;
 		this.date_heure_retour = date_heure_retour;
-		this.quatite = quatite;
+		this.quantite = quatite;
 		this.etat_marche_mat = etat_marche_mat;
 	}
 
@@ -68,7 +75,7 @@ public class Materiel implements Serializable{
 		this.designation_mat = designation_mat;
 		this.date_heure_sortie = date_heure_sortie;
 		this.date_heure_retour = date_heure_retour;
-		this.quatite = quatite;
+		this.quantite = quatite;
 		this.etat_marche_mat = etat_marche_mat;
 	}
 
@@ -173,7 +180,7 @@ public class Materiel implements Serializable{
 
 
 	public int getQuatite() {
-		return quatite;
+		return quantite;
 	}
 
 
@@ -181,7 +188,7 @@ public class Materiel implements Serializable{
 
 
 	public void setQuatite(int quatite) {
-		this.quatite = quatite;
+		this.quantite = quatite;
 	}
 
 
