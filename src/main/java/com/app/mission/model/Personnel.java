@@ -80,7 +80,7 @@ public class Personnel implements Serializable{
 
 
 	@OneToOne
-	@JoinColumn(name="id_utilisateur")
+	@JoinColumn(name="id_user")
 	private User utilsateur;
 	
 		

@@ -66,7 +66,6 @@ public class RoleController {
 				}
 				currentRole.setPermissions(role.getPermissions());
 				currentRole.setEtapes(role.getEtapes());
-				currentRole.setUtilisateurs(role.getUtilisateurs());
 
 				roleService.addRole(currentRole);
 				return currentRole;

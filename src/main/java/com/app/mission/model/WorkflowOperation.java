@@ -92,8 +92,8 @@ public class WorkflowOperation implements Serializable{
 	    @OneToMany(mappedBy ="id_pieceJointe")
 	    private List<PieceJointe> pieceJointes;
 	    
-	    @OneToMany(mappedBy ="id_utilisateur")
-	    private List<User> utilisateurs;
+	    @OneToMany(mappedBy ="id_user")
+	    private List<User> users;
 
 		public WorkflowOperation() {
 			super();
@@ -130,7 +130,7 @@ public class WorkflowOperation implements Serializable{
 			this.etape = etape;
 			this.mission = mission;
 			this.pieceJointes = pieceJointes;
-			this.utilisateurs = utilisateurs;
+			this.users = utilisateurs;
 		}
 
 		public Long getId_wkfOp() {
@@ -222,11 +222,11 @@ public class WorkflowOperation implements Serializable{
 		}
 
 		public List<User> getUtilisateurs() {
-			return utilisateurs;
+			return users;
 		}
 
 		public void setUtilisateurs(List<User> utilisateurs) {
-			this.utilisateurs = utilisateurs;
+			this.users = utilisateurs;
 		}
 	
 	    

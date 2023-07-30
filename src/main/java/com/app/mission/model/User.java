@@ -31,7 +31,7 @@ public class User implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "utilisateur_generator")
-	private Long id_utilisateur;
+	private Long id_user;
 	
 	private String username;
 
@@ -46,7 +46,7 @@ public class User implements Serializable{
 	
 	@ManyToMany
 	@JoinTable(name = "user_roles",
-		joinColumns = @JoinColumn(name = "id_utilisateur"),
+		joinColumns = @JoinColumn(name = "id_user"),
 		inverseJoinColumns = @JoinColumn(name = "id_role")
 	)
 	  private Set<Role> roles = new HashSet<>();
@@ -70,7 +70,7 @@ public class User implements Serializable{
 
 	public User(Long id_utilisateur, String nom_utilisateur, String mot_de_passe, String email) {
 		super();
-		this.id_utilisateur = id_utilisateur;
+		this.id_user = id_utilisateur;
 		this.username = nom_utilisateur;
 		this.password = mot_de_passe;
 		this.email = email;
@@ -97,7 +97,7 @@ public class User implements Serializable{
 	public User(Long id_utilisateur, String nom_utilisateur, String mot_de_passe, String email,
 			Personnel personnel, Set<Role> roles, WorkflowOperation workflowOperation) {
 		super();
-		this.id_utilisateur = id_utilisateur;
+		this.id_user = id_utilisateur;
 		this.username = nom_utilisateur;
 		this.password = mot_de_passe;
 		this.email = email;
@@ -111,12 +111,12 @@ public class User implements Serializable{
 
 
 	public Long getId_utilisateur() {
-		return id_utilisateur;
+		return id_user;
 	}
 
 
 	public void setId_utilisateur(Long id_utilisateur) {
-		this.id_utilisateur = id_utilisateur;
+		this.id_user = id_utilisateur;
 	}
 
 
