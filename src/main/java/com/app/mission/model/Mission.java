@@ -122,7 +122,6 @@ public class Mission implements Serializable{
 	private String surface_decollage;
 	private String balisage;
 	private String evenements;
-	private String difficultes;
 	private String plage_horaire_mission_debut;
 	private String plage_horaire_mission_fin;
 	private Date date_estime_mission;
@@ -213,7 +212,7 @@ public class Mission implements Serializable{
 		this.surface_decollage = surface_decollage;
 		this.balisage = balisage;
 		this.evenements = evenements;
-		this.difficultes = difficultes;
+	
 		this.plage_horaire_mission_debut = plage_horaire_mission_debut;
 		this.plage_horaire_mission_fin = plage_horaire_mission_fin;
 		this.date_estime_mission = date_estime_mission;
@@ -241,7 +240,7 @@ public class Mission implements Serializable{
 			Set<Personnel> personnels, String nom_mission, String type_mission, String description_mission,
 			String code_mission, String classe_espace_aerien, String statut_zone_mission, String scenario_mission,
 			String condition_humidite, String condition_visibilite, String surface_atterissage,
-			String surface_decollage, String balisage, String evenements, String difficultes,
+			String surface_decollage, String balisage, String evenements,
 			String plage_horaire_mission_debut, String plage_horaire_mission_fin, Date date_estime_mission,
 			Date date_heure_effective_mission, String date_heure_arrive, int latitude, int longitude,
 			String condition_vent_critque_mission, String autorite_informe) {
@@ -268,7 +267,6 @@ public class Mission implements Serializable{
 		this.surface_decollage = surface_decollage;
 		this.balisage = balisage;
 		this.evenements = evenements;
-		this.difficultes = difficultes;
 		this.plage_horaire_mission_debut = plage_horaire_mission_debut;
 		this.plage_horaire_mission_fin = plage_horaire_mission_fin;
 		this.date_estime_mission = date_estime_mission;
@@ -521,14 +519,6 @@ public class Mission implements Serializable{
 	}
 
 
-	public String getDifficultes() {
-		return difficultes;
-	}
-
-
-	public void setDifficultes(String difficultes) {
-		this.difficultes = difficultes;
-	}
 
 
 	public String getPlage_horaire_mission_debut() {

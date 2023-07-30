@@ -121,7 +121,6 @@ public class MissionController {
 				currentMission.setDescription_mission(mission.getDescription_mission());
 				currentMission.setDate_estime_mission(mission.getDate_estime_mission());
 				currentMission.setDate_heure_effective_mission(mission.getDate_heure_effective_mission());
-				currentMission.setDifficultes(mission.getDifficultes());
 				currentMission.setStatut_zone_mission(mission.getStatut_zone_mission());
 				currentMission.setScenario_mission(mission.getScenario_mission());
 				currentMission.setSurface_decollage(mission.getSurface_decollage());
@@ -159,7 +158,6 @@ public class MissionController {
 				currentMission.setDescription_mission(mission.getDescription_mission());
 				currentMission.setDate_estime_mission(mission.getDate_estime_mission());
 				currentMission.setDate_heure_effective_mission(mission.getDate_heure_effective_mission());
-				currentMission.setDifficultes(mission.getDifficultes());
 				currentMission.setStatut_zone_mission(mission.getStatut_zone_mission());
 				currentMission.setScenario_mission(mission.getScenario_mission());
 				currentMission.setSurface_decollage(mission.getSurface_decollage());
@@ -169,7 +167,6 @@ public class MissionController {
 				currentMission.setPlage_horaire_mission_fin(mission.getPlage_horaire_mission_fin());
 				currentMission.setClasse_espace_aerien(mission.getClasse_espace_aerien());
 				currentMission.setMateriels(mission.getMateriels());
-
 				currentMission.setPersonnels(mission.getPersonnels());
 				currentMission.setPieceJointes(mission.getPieceJointes());
 				currentMission.setType_mission(mission.getType_mission());
